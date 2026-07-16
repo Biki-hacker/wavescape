@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%" shape-rendering="crispEdges">
+  <defs>
+    <g id="retro-knob">
+      <rect x="-6" y="-10" width="12" height="20" fill="#d8c07e" />
+      <rect x="-8" y="-8" width="16" height="16" fill="#d8c07e" />
+      <rect x="-10" y="-6" width="20" height="12" fill="#d8c07e" />
+      <rect x="-5" y="-9" width="10" height="18" fill="#d1d1d1" />
+      <rect x="-7" y="-7" width="14" height="14" fill="#d1d1d1" />
+      <rect x="-9" y="-5" width="18" height="10" fill="#d1d1d1" />
+      <rect x="-4" y="-7" width="8" height="14" fill="#9e9e9e" />
+      <rect x="-6" y="-5" width="12" height="10" fill="#9e9e9e" />
+      <rect x="-7" y="-3" width="14" height="6" fill="#9e9e9e" />
+      <rect x="-3" y="-4" width="6" height="8" fill="#ffffff" />
+      <rect x="-4" y="-3" width="8" height="6" fill="#ffffff" />
+    </g>
+  </defs>
+
+  <rect x="14" y="116" width="104" height="4" fill="#000000" opacity="0.2" />
+
+  <path d="M30 34 h2 v2 h-2 z M28 32 h2 v2 h-2 z M26 30 h2 v2 h-2 z M24 28 h2 v2 h-2 z M22 26 h2 v2 h-2 z M20 24 h2 v2 h-2 z M18 22 h2 v2 h-2 z M16 20 h2 v2 h-2 z M14 18 h2 v2 h-2 z M12 16 h2 v2 h-2 z M10 14 h2 v2 h-2 z M8 12 h2 v2 h-2 z M6 10 h2 v2 h-2 z M4 8 h2 v2 h-2 z" fill="#b0bec5" />
+  <rect x="2" y="6" width="4" height="4" fill="#78909c" />
+  <rect x="30" y="36" width="4" height="2" fill="#444444" />
+
+  <rect x="16" y="12" width="96" height="8" fill="#1a1a1a" />
+  <rect x="16" y="20" width="6" height="20" fill="#1a1a1a" />
+  <rect x="106" y="20" width="6" height="20" fill="#1a1a1a" />
+  <rect x="17" y="13" width="94" height="2" fill="#333333" /> <rect x="12" y="36" width="104" height="80" fill="#7c532b" />
+  <rect x="12" y="36" width="104" height="2" fill="#9a6a3b" /> <rect x="12" y="114" width="104" height="2" fill="#4b321a" /> <rect x="116" y="40" width="4" height="76" fill="#52361b" />
+  <rect x="116" y="40" width="2" height="76" fill="#664423" />
+  <rect x="117" y="60" width="2" height="6" fill="#140d06" />
+  <rect x="117" y="70" width="2" height="12" fill="#140d06" />
+  <rect x="117" y="90" width="2" height="8" fill="#140d06" />
+
+  <rect x="16" y="42" width="96" height="68" fill="#d8c07e" />
+  <rect x="18" y="44" width="92" height="64" fill="#141414" />
+  <rect x="20" y="46" width="88" height="60" fill="#f2df9f" />
+  
+  <rect x="22" y="48" width="84" height="30" fill="#0d0d0d" />
+
+  <path d="M24 48 h2 v30 h-2 z M28 48 h2 v30 h-2 z M32 48 h2 v30 h-2 z M36 48 h2 v30 h-2 z M40 48 h2 v30 h-2 z M44 48 h2 v30 h-2 z M48 48 h2 v30 h-2 z M52 48 h2 v30 h-2 z M56 48 h2 v30 h-2 z M60 48 h2 v30 h-2 z M64 48 h2 v30 h-2 z M68 48 h2 v30 h-2 z M72 48 h2 v30 h-2 z M76 48 h2 v30 h-2 z M80 48 h2 v30 h-2 z M84 48 h2 v30 h-2 z M88 48 h2 v30 h-2 z M92 48 h2 v30 h-2 z M96 48 h2 v30 h-2 z M100 48 h2 v30 h-2 z" fill="#f2df9f"/>
+  <path d="M25 48 h1 v30 h-1 z M29 48 h1 v30 h-1 z M33 48 h1 v30 h-1 z M37 48 h1 v30 h-1 z M41 48 h1 v30 h-1 z M45 48 h1 v30 h-1 z M49 48 h1 v30 h-1 z M53 48 h1 v30 h-1 z M57 48 h1 v30 h-1 z M61 48 h1 v30 h-1 z M65 48 h1 v30 h-1 z M69 48 h1 v30 h-1 z M73 48 h1 v30 h-1 z M77 48 h1 v30 h-1 z M81 48 h1 v30 h-1 z M85 48 h1 v30 h-1 z M89 48 h1 v30 h-1 z M93 48 h1 v30 h-1 z M97 48 h1 v30 h-1 z M101 48 h1 v30 h-1 z" fill="#c3a65b"/>
+  <rect x="22" y="54" width="84" height="2" fill="#0d0d0d" />
+  <rect x="22" y="63" width="84" height="2" fill="#0d0d0d" />
+  <rect x="22" y="72" width="84" height="2" fill="#0d0d0d" />
+
+  <rect x="22" y="78" width="84" height="4" fill="#0d0d0d" />
+  <rect x="36" y="78" width="56" height="4" fill="#3b76e3" />
+  <rect x="40" y="79" width="48" height="2" fill="#c4dbff" />
+  <rect x="44" y="80" width="40" height="1" fill="#ffffff" />
+
+  <rect x="22" y="82" width="84" height="22" fill="#241f18" />
+
+  <path d="M42 86 h2 M46 86 h2 M50 86 h2 M54 86 h2 M58 86 h2 M62 86 h2 M66 86 h2 M70 86 h2 M74 86 h2 M78 86 h2 M82 86 h2" stroke="#c3a65b" stroke-width="1" />
+  <path d="M42 90 h1 M45 90 h1 M48 90 h1 M51 90 h1 M54 90 h1 M57 90 h1 M60 90 h1 M63 90 h1 M66 90 h1 M69 90 h1 M72 90 h1 M75 90 h1 M78 90 h1 M81 90 h1 M84 90 h1" stroke="#c3a65b" stroke-width="1" />
+  <path d="M42 94 h2 M47 94 h2 M52 94 h2 M57 94 h2 M62 94 h2 M67 94 h2 M72 94 h2 M77 94 h2 M82 94 h2" stroke="#c3a65b" stroke-width="1" />
+  <path d="M42 98 h3 M48 98 h3 M54 98 h3 M60 98 h3 M66 98 h3 M72 98 h3 M78 98 h3 M84 98 h3" stroke="#c3a65b" stroke-width="1" />
+  
+  <rect x="74" y="82" width="2" height="22" fill="#e62e2e" />
+
+  <rect x="24" y="83" width="12" height="4" fill="#f2df9f" />
+  <rect x="25" y="84" width="2" height="2" fill="#241f18" />
+  <rect x="28" y="84" width="2" height="2" fill="#241f18" />
+  <rect x="31" y="84" width="2" height="2" fill="#241f18" />
+
+  <rect x="90" y="83" width="14" height="4" fill="#f2df9f" />
+  <rect x="91" y="84" width="2" height="2" fill="#241f18" />
+  <rect x="94" y="84" width="2" height="2" fill="#241f18" />
+  <rect x="97" y="84" width="2" height="2" fill="#241f18" />
+  <rect x="100" y="84" width="2" height="2" fill="#241f18" />
+
+  <rect x="22" y="104" width="84" height="2" fill="#d8c07e" />
+  <rect x="42" y="101" width="44" height="5" fill="#a38644" />
+
+  <rect x="44" y="102" width="6" height="3" fill="#f2df9f" />
+  <rect x="44" y="105" width="6" height="1" fill="#c3a65b" />
+
+  <rect x="52" y="102" width="6" height="3" fill="#f2df9f" />
+  <rect x="52" y="105" width="6" height="1" fill="#c3a65b" />
+
+  <rect x="60" y="102" width="6" height="3" fill="#f2df9f" />
+  <rect x="60" y="105" width="6" height="1" fill="#c3a65b" />
+
+  <rect x="68" y="102" width="6" height="3" fill="#f2df9f" />
+  <rect x="68" y="105" width="6" height="1" fill="#c3a65b" />
+
+  <rect x="76" y="102" width="8" height="3" fill="#f2df9f" />
+  <rect x="76" y="105" width="8" height="1" fill="#c3a65b" />
+
+  <use href="#retro-knob" x="30" y="94" /> <use href="#retro-knob" x="98" y="94" /> </svg>

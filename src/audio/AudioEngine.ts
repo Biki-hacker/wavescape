@@ -118,6 +118,7 @@ export class AudioEngine {
 
       audio.addEventListener('canplay', () => {
         if (playId !== this.currentPlayId || this.audioElement !== audio) return
+        if (this._state === 'paused' || this._state === 'idle') return
         if (this.gainNode && this.audioContext) {
           const now = this.audioContext.currentTime
           const targetVolume = this._muted ? 0 : this._volume
@@ -152,7 +153,7 @@ export class AudioEngine {
   }
 
   pause(): void {
-    if (this.audioElement && this._state === 'playing') {
+    if (this.audioElement && (this._state === 'playing' || this._state === 'loading' || this._state === 'buffering')) {
       this.audioElement.pause()
       this.setState('paused')
       this.stopAnalysis()

@@ -21,6 +21,11 @@ export function TVPlayer({ channel, stream, logoUrl, onClose, isActive = true }:
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const isActiveRef = useRef(isActive)
+  useEffect(() => {
+    isActiveRef.current = isActive
+  }, [isActive])
+
   // Initialize and attach video stream (HLS or native)
   useEffect(() => {
     const video = videoRef.current
@@ -52,9 +57,11 @@ export function TVPlayer({ channel, stream, logoUrl, onClose, isActive = true }:
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         setLoading(false)
-        video.play().then(() => setIsPlaying(true)).catch(() => {
-          setIsPlaying(false)
-        })
+        if (isActiveRef.current) {
+          video.play().then(() => setIsPlaying(true)).catch(() => {
+            setIsPlaying(false)
+          })
+        }
       })
 
       hls.on(Hls.Events.ERROR, (_, data) => {
@@ -79,7 +86,9 @@ export function TVPlayer({ channel, stream, logoUrl, onClose, isActive = true }:
       video.src = streamUrl
       video.addEventListener('loadedmetadata', () => {
         setLoading(false)
-        video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
+        if (isActiveRef.current) {
+          video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
+        }
       })
       video.addEventListener('error', () => {
         setError('Failed to play stream')
@@ -88,7 +97,9 @@ export function TVPlayer({ channel, stream, logoUrl, onClose, isActive = true }:
     } else {
       // Direct stream fallback
       video.src = streamUrl
-      video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
+      if (isActiveRef.current) {
+        video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
+      }
     }
 
     return () => {
@@ -100,14 +111,14 @@ export function TVPlayer({ channel, stream, logoUrl, onClose, isActive = true }:
   }, [stream])
 
   useEffect(() => {
-    if (!isActive && isPlaying) {
+    if (!isActive) {
       const video = videoRef.current
       if (video && !video.paused) {
         video.pause()
         setIsPlaying(false)
       }
     }
-  }, [isActive, isPlaying])
+  }, [isActive])
 
   const togglePlay = useCallback(() => {
     const video = videoRef.current

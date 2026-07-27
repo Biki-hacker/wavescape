@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Tv, Loader2, AlertCircle } from 'lucide-react'
 import type { TVChannel, TVCategory, TVStream } from '../types'
 import { TVCategoryFilter } from './TVCategoryFilter'
@@ -72,6 +72,14 @@ export function TVDisplay({
     setVisibleCount(PAGE_SIZE) // Reset pagination
   }
 
+  // Clear player when a new search begins
+  useEffect(() => {
+    if (loading) {
+      setActiveChannel(null)
+      setActiveStream(null)
+    }
+  }, [loading])
+
   // Loading state
   if (loading) {
     return (
@@ -129,17 +137,19 @@ export function TVDisplay({
               </p>
             </div>
           </div>
-          <label className="flex items-center gap-2 cursor-pointer group w-fit">
-            <div className="relative flex items-center justify-center w-6 h-6 border-2 border-black rounded bg-white overflow-hidden group-hover:bg-gray-100 transition-colors">
+          <label className="flex items-center gap-3 cursor-pointer group w-fit">
+            <div className={`relative w-12 h-6 border-2 border-black rounded-full transition-colors duration-200 shadow-[2px_2px_0px_rgba(0,0,0,1)] ${
+              showOnlyStreaming ? 'bg-[var(--accent)]' : 'bg-gray-200'
+            }`}>
               <input
                 type="checkbox"
                 className="absolute opacity-0 cursor-pointer w-full h-full z-10"
                 checked={showOnlyStreaming}
                 onChange={(e) => handleToggleStreaming(e.target.checked)}
               />
-              {showOnlyStreaming && (
-                <div className="w-3.5 h-3.5 bg-[var(--accent)] border-2 border-black" />
-              )}
+              <div className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full border-2 border-black transition-transform duration-200 ${
+                showOnlyStreaming ? 'translate-x-6' : 'translate-x-0'
+              }`} />
             </div>
             <span className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--text)] select-none">
               Currently Streaming
@@ -201,18 +211,20 @@ export function TVDisplay({
           </div>
         </div>
 
-        {/* Checkbox for streaming only */}
-        <label className="flex items-center gap-2 cursor-pointer group w-fit">
-          <div className="relative flex items-center justify-center w-6 h-6 border-2 border-black rounded bg-white overflow-hidden group-hover:bg-gray-100 transition-colors">
+        {/* Toggle for streaming only */}
+        <label className="flex items-center gap-3 cursor-pointer group w-fit">
+          <div className={`relative w-12 h-6 border-2 border-black rounded-full transition-colors duration-200 shadow-[2px_2px_0px_rgba(0,0,0,1)] ${
+            showOnlyStreaming ? 'bg-[var(--accent)]' : 'bg-gray-200'
+          }`}>
             <input
               type="checkbox"
               className="absolute opacity-0 cursor-pointer w-full h-full z-10"
               checked={showOnlyStreaming}
               onChange={(e) => handleToggleStreaming(e.target.checked)}
             />
-            {showOnlyStreaming && (
-              <div className="w-3.5 h-3.5 bg-[var(--accent)] border-2 border-black" />
-            )}
+            <div className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full border-2 border-black transition-transform duration-200 ${
+              showOnlyStreaming ? 'translate-x-6' : 'translate-x-0'
+            }`} />
           </div>
           <span className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--text)] select-none">
             Currently Streaming

@@ -6,7 +6,7 @@ import type { ServiceTab } from './components/ServiceTabs'
 import { audioEngine } from './audio/AudioEngine'
 
 function WaveScapeContent() {
-  const { activeLocation, searchedLocation, weather, weatherProfile, currentStation, playbackState, stations, theme, sceneState, error, timezone, audioMetrics } = useAppState()
+  const { searchedLocation, weather, weatherProfile, currentStation, playbackState, stations, theme, sceneState, error, timezone, audioMetrics } = useAppState()
   const dispatch = useAppDispatch()
   const [volume, setVolume] = useState(0.8)
   const [muted, setMuted] = useState(false)
@@ -15,6 +15,11 @@ function WaveScapeContent() {
   const [activeTab, setActiveTab] = useState<ServiceTab>('radio')
   const searchInitRef = useRef(false)
   const previousTab = useRef<ServiceTab>(activeTab)
+  const activeTabRef = useRef<ServiceTab>(activeTab)
+
+  useEffect(() => {
+    activeTabRef.current = activeTab
+  }, [activeTab])
 
   const { suggestions, loading: searchLoading, search, clearSuggestions } = useLocation()
   const { weatherLoading } = useWeather()
@@ -37,6 +42,11 @@ function WaveScapeContent() {
     dispatch({ type: 'SET_SEARCHED_LOCATION', payload: loc })
     dispatch({ type: 'CLEAR_DATA' })
 
+    // Load TV channels for the country concurrently with radio stations
+    if (loc.countryCode) {
+      tv.loadTVData(loc.countryCode)
+    }
+
     // Load radio stations
     const stationsResult = await loadStations(loc.latitude, loc.longitude)
 
@@ -45,15 +55,12 @@ function WaveScapeContent() {
       selectStation(station)
 
       try {
-        await audioEngine.play(station.streamUrl, station.id)
+        if (activeTabRef.current === 'radio') {
+          await audioEngine.play(station.streamUrl, station.id)
+        }
       } catch {
         dispatch({ type: 'SET_PLAYBACK_STATE', payload: 'error' })
       }
-    }
-
-    // Load TV channels for the country
-    if (loc.countryCode) {
-      tv.loadTVData(loc.countryCode)
     }
 
     dispatch({ type: 'SET_SCENE_STATE', payload: 'playing' })
@@ -105,12 +112,10 @@ function WaveScapeContent() {
   }, [landingComplete])
 
   useEffect(() => {
-    if (activeTab !== previousTab.current) {
-      if (activeTab === 'tv' && playbackState === 'playing') {
-        audioEngine.pause()
-      }
-      previousTab.current = activeTab
+    if (activeTab === 'tv' && (playbackState === 'playing' || playbackState === 'loading' || playbackState === 'buffering')) {
+      audioEngine.pause()
     }
+    previousTab.current = activeTab
   }, [activeTab, playbackState])
 
   if (!landingComplete) {
@@ -240,8 +245,8 @@ function WaveScapeContent() {
             <ServiceTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
-          {activeLocation && (
-            <LocationDisplay location={activeLocation} />
+          {searchedLocation && (
+            <LocationDisplay location={searchedLocation} />
           )}
 
           {/* === RADIO TAB CONTENT === */}

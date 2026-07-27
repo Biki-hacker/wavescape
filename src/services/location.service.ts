@@ -21,6 +21,7 @@ interface NominatimResponse {
     state?: string
     island?: string
     country?: string
+    country_code?: string
   }
 }
 
@@ -51,6 +52,7 @@ export async function searchLocations(
           item.address?.island ??
           fallbackName,
         country: item.address?.country ?? 'Unknown',
+        countryCode: item.address?.country_code?.toUpperCase(),
         displayName: item.display_name,
         latitude: parseFloat(item.lat),
         longitude: parseFloat(item.lon),
@@ -69,6 +71,7 @@ export async function resolveLocation(
   return {
     name: first.name,
     country: first.country,
+    countryCode: first.countryCode,
     displayName: first.displayName,
     latitude: first.latitude,
     longitude: first.longitude,

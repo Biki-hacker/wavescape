@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%" shape-rendering="crispEdges">
+  <defs>
+    <!-- Pixel Knob Template -->
+    <g id="pixel-knob">
+      <rect x="-14" y="-14" width="28" height="28" fill="#000000" />
+      <rect x="-12" y="-12" width="24" height="24" fill="#8e8e93" />
+      <rect x="-10" y="-10" width="20" height="20" fill="#aeaeb2" />
+      <rect x="-8" y="-8" width="16" height="16" fill="#e5e5ea" />
+      <rect x="-2" y="-10" width="4" height="8" fill="#000000" />
+    </g>
+    <!-- Small Knob -->
+    <g id="pixel-knob-sm">
+      <rect x="-9" y="-9" width="18" height="18" fill="#000000" />
+      <rect x="-7" y="-7" width="14" height="14" fill="#8e8e93" />
+      <rect x="-5" y="-5" width="10" height="10" fill="#e5e5ea" />
+      <rect x="-1" y="-7" width="2" height="5" fill="#000000" />
+    </g>
+    <mask id="screen-hole">
+      <rect x="0" y="0" width="400" height="300" fill="#ffffff" />
+      <rect x="54" y="82" width="236" height="166" fill="#000000" />
+    </mask>
+  </defs>
+
+  <!-- Ground Shadow -->
+  <rect x="30" y="288" width="340" height="8" fill="#000000" opacity="0.3" />
+
+  <!-- TV Feet -->
+  <rect x="60" y="280" width="32" height="10" fill="#000000" />
+  <rect x="64" y="282" width="24" height="6" fill="#3a3a3c" />
+  <rect x="308" y="280" width="32" height="10" fill="#000000" />
+  <rect x="312" y="282" width="24" height="6" fill="#3a3a3c" />
+
+  <!-- Antennas -->
+  <!-- Left Antenna -->
+  <path d="M170 48 L90 8 L96 4 L176 44 Z" fill="#000000" />
+  <path d="M171 46 L92 9 L95 6 L174 43 Z" fill="#8e8e93" />
+  <path d="M172 45 L93 10 L94 8 L173 42 Z" fill="#ffffff" />
+  <!-- Left Antenna Tip Ball -->
+  <rect x="84" y="2" width="12" height="12" fill="#000000" />
+  <rect x="86" y="4" width="8" height="8" fill="#ff3b30" />
+  <rect x="88" y="5" width="3" height="3" fill="#ffffff" />
+
+  <!-- Right Antenna -->
+  <path d="M230 48 L310 8 L304 4 L224 44 Z" fill="#000000" />
+  <path d="M229 46 L308 9 L305 6 L226 43 Z" fill="#8e8e93" />
+  <path d="M228 45 L307 10 L306 8 L227 42 Z" fill="#ffffff" />
+  <!-- Right Antenna Tip Ball -->
+  <rect x="304" y="2" width="12" height="12" fill="#000000" />
+  <rect x="306" y="4" width="8" height="8" fill="#ff3b30" />
+  <rect x="308" y="5" width="3" height="3" fill="#ffffff" />
+
+  <!-- Antenna Base Mount -->
+  <rect x="160" y="40" width="80" height="10" fill="#000000" />
+  <rect x="164" y="42" width="72" height="6" fill="#48484a" />
+  <rect x="194" y="36" width="12" height="6" fill="#8e8e93" />
+
+  <g mask="url(#screen-hole)">
+    <!-- TV Outer Wooden Cabinet (Black Shadow Border) -->
+    <rect x="20" y="48" width="360" height="234" fill="#000000" />
+
+    <!-- Main Wood Body -->
+    <rect x="24" y="52" width="352" height="226" fill="#7a4b2a" />
+    <!-- Top Highlight -->
+    <rect x="24" y="52" width="352" height="6" fill="#a4693d" />
+    <!-- Left Highlight -->
+    <rect x="24" y="52" width="6" height="226" fill="#915b33" />
+    <!-- Bottom Shadow -->
+    <rect x="24" y="272" width="352" height="6" fill="#462914" />
+    <!-- Right Shadow -->
+    <rect x="370" y="52" width="6" height="226" fill="#462914" />
+
+    <!-- Wood Grain Texture Accents -->
+    <rect x="40" y="62" width="60" height="2" fill="#60391d" />
+    <rect x="180" y="60" width="80" height="2" fill="#60391d" />
+    <rect x="310" y="62" width="40" height="2" fill="#60391d" />
+    <rect x="30" y="266" width="90" height="2" fill="#60391d" />
+    <rect x="240" y="268" width="70" height="2" fill="#60391d" />
+
+    <!-- Inner Bezel Frame (Cream Retro Plastic) -->
+    <rect x="36" y="64" width="328" height="202" fill="#000000" />
+    <rect x="40" y="68" width="320" height="194" fill="#d9c59a" />
+    <!-- Cream Plastic Top & Left Highlights -->
+    <rect x="40" y="68" width="320" height="4" fill="#efe4ca" />
+    <rect x="40" y="68" width="4" height="194" fill="#efe4ca" />
+    <!-- Cream Plastic Bottom & Right Shadows -->
+    <rect x="40" y="258" width="320" height="4" fill="#b39d73" />
+    <rect x="356" y="68" width="4" height="194" fill="#b39d73" />
+  </g>
+
+  <!-- CRT Dark Screen Surround / Inset Shadow (HOLLOW CENTER FOR VIDEO STREAM) -->
+  <!-- Top Bezel -->
+  <rect x="48" y="76" width="248" height="6" fill="#000000" />
+  <!-- Bottom Bezel -->
+  <rect x="48" y="248" width="248" height="6" fill="#000000" />
+  <!-- Left Bezel -->
+  <rect x="48" y="82" width="6" height="166" fill="#000000" />
+  <!-- Right Bezel -->
+  <rect x="290" y="82" width="6" height="166" fill="#000000" />
+
+  <!-- Inner Bezel Bevel (Top & Left) -->
+  <rect x="52" y="80" width="240" height="2" fill="#3a3a3c" />
+  <rect x="52" y="80" width="2" height="168" fill="#3a3a3c" />
+  <!-- Inner Bezel Bevel (Bottom & Right) -->
+  <rect x="52" y="246" width="240" height="2" fill="#1c1c1e" />
+  <rect x="290" y="80" width="2" height="168" fill="#1c1c1e" />
+
+  <!-- Inner Glass Bezel Border Reflections (Corners) -->
+  <path d="M54 82 H98 V86 H58 V126 H54 Z" fill="#ffffff" opacity="0.2" />
+  <path d="M292 246 H248 V242 H288 V202 H292 Z" fill="#000000" opacity="0.4" />
+
+  <!-- RIGHT CONTROL PANEL -->
+  <rect x="304" y="76" width="48" height="178" fill="#000000" />
+  <rect x="306" y="78" width="44" height="174" fill="#2c2c2e" />
+  <rect x="306" y="78" width="44" height="2" fill="#48484a" />
+  <rect x="306" y="78" width="2" height="174" fill="#48484a" />
+
+  <!-- Channel Knob Section -->
+  <rect x="312" y="84" width="32" height="8" fill="#ffde59" />
+  <text x="328" y="91" font-family="monospace" font-weight="900" font-size="6" fill="#000000" text-anchor="middle">CH-05</text>
+
+  <!-- Big Channel Dial Knob -->
+  <use href="#pixel-knob" x="328" y="118" />
+
+  <!-- Small Volume Knob -->
+  <use href="#pixel-knob-sm" x="328" y="152" />
+
+  <!-- Power Switch & Indicator LED -->
+  <rect x="314" y="172" width="28" height="16" fill="#000000" />
+  <rect x="316" y="174" width="24" height="12" fill="#1c1c1e" />
+  <!-- LED Power Light (Glow Red) -->
+  <rect x="320" y="178" width="5" height="5" fill="#3a0000" />
+  <rect x="321" y="179" width="3" height="3" fill="#ff3b30" />
+  <rect x="328" y="178" width="10" height="4" fill="#ffde59" />
+  <rect x="330" y="179" width="6" height="2" fill="#000000" />
+
+  <!-- Speaker Grille (Horizontal Ventilation Slots) -->
+  <g fill="#000000">
+    <rect x="312" y="196" width="32" height="3" />
+    <rect x="312" y="202" width="32" height="3" />
+    <rect x="312" y="208" width="32" height="3" />
+    <rect x="312" y="214" width="32" height="3" />
+    <rect x="312" y="220" width="32" height="3" />
+    <rect x="312" y="226" width="32" height="3" />
+  </g>
+  <g fill="#48484a">
+    <rect x="312" y="199" width="32" height="1" />
+    <rect x="312" y="205" width="32" height="1" />
+    <rect x="312" y="211" width="32" height="1" />
+    <rect x="312" y="217" width="32" height="1" />
+    <rect x="312" y="223" width="32" height="1" />
+    <rect x="312" y="229" width="32" height="1" opacity="0.5" />
+  </g>
+
+  <!-- Retro Brand Badge -->
+  <rect x="310" y="238" width="36" height="10" fill="#000000" />
+  <rect x="311" y="239" width="34" height="8" fill="#ffde59" />
+  <text x="328" y="245.5" font-family="monospace" font-weight="900" font-size="5" fill="#000000" text-anchor="middle">WAVESCAPE</text>
+
+  <!-- Bottom Front Panel Screws -->
+  <rect x="46" y="250" width="4" height="4" fill="#7a4b2a" />
+  <rect x="47" y="251" width="2" height="2" fill="#000000" />
+  <rect x="290" y="250" width="4" height="4" fill="#7a4b2a" />
+  <rect x="291" y="251" width="2" height="2" fill="#000000" />
+</svg>

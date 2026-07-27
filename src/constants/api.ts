@@ -9,4 +9,5 @@ export const API_BASE_URLS = {
   worldTime: 'https://worldtimeapi.org/api',
   timeApi: 'https://timeapi.io/api/Time/current',
   radioBrowser: 'https://de1.api.radio-browser.info/json',
+  iptvOrg: 'https://iptv-org.github.io/api',
 } as const

@@ -6,8 +6,9 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
 [![Web Audio API](https://img.shields.io/badge/Web_Audio_API-Enabled-FF8C00?style=flat)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 [![Tests](https://img.shields.io/badge/Tests-Vitest-7E9B4E?style=flat&logo=vitest)](https://vitest.dev/)
+[![HLS.js](https://img.shields.io/badge/HLS.js-Stream-B30000?style=flat)](https://github.com/video-dev/hls.js/)
 
-**WaveScape** is a retro, ambient geolocation-driven radio receiver that adapts its visual theme, UI atmosphere, and particle rendering to the real-time weather and time of any searched city in the world. Powered by a custom Canvas visualization engine and the Web Audio API, WaveScape translates live audio streams into real-time visual waves, offering users a sensory portal to different locations around the globe.
+**WaveScape** is a retro, ambient geolocation-driven radio and live TV receiver that adapts its visual theme, UI atmosphere, and particle rendering to the real-time weather and time of any searched city in the world. Powered by a custom Canvas visualization engine, the Web Audio API, and HLS streaming, WaveScape translates live audio and IPTV streams into an immersive sensory portal to different locations around the globe.
 
 ---
 
@@ -52,6 +53,7 @@ Located in [src/context/AppContext.tsx](file:///d:/WaveScape/src/context/AppCont
 Hooks act as the intermediate controller layer, binding UI components to external data fetches and background engines:
 *   [useLocation.ts](file:///d:/WaveScape/src/hooks/useLocation.ts): Wraps Nominatim queries. Implements abortable fetch requests to handle overlapping typing triggers.
 *   [useRadio.ts](file:///d:/WaveScape/src/hooks/useRadio.ts): Connects React state to the `AudioEngine` event emitter system. Handles track jumping (`next`/`prev`), volume control, and dispatches real-time spectral analyzer data.
+*   [useTV.ts](file:///d:/WaveScape/src/hooks/useTV.ts): Connects React state to the IPTV-org API endpoints. Handles loading of channel lists, parsing streams, matching country codes, categorizing broadcasts, and mapping channel logos.
 *   [useWeather.ts](file:///d:/WaveScape/src/hooks/useWeather.ts): Handles weather fetching and schedules periodic background updates (`WEATHER_REFRESH_INTERVAL` of 10 minutes) to update themes and clock offsets on active channels.
 *   [useClock.ts](file:///d:/WaveScape/src/hooks/useClock.ts): Formats local time for any timezone offset, ticking independently to keep local dials accurate.
 *   [useVisualization.ts](file:///d:/WaveScape/src/hooks/useVisualization.ts): Binds the HTML5 Canvas reference lifecycle to the visual rendering loop.
@@ -90,7 +92,7 @@ The application coordinates five free, open-access web APIs to resolve geolocati
 | **TimeAPI.io** | Local timezone calculations | `https://timeapi.io/api/Time/current/coordinate` | High-accuracy local time, timezone labels, and DST offsets. |
 | **WorldTimeAPI** | Backup local time & timezone resolver | `https://worldtimeapi.org/api/timezone` | Failover timezone database and current local time strings. |
 | **Radio Browser** | Crowd-sourced live stream directory | `https://de1.api.radio-browser.info/json` | Streaming URLs, station names, bitrates, audio codecs, tags, favicons, and coordinates. |
-
+| **IPTV-Org API** | Live TV directories | `https://iptv-org.github.io/api` | TV channels, categories, HLS stream URLs, logos, and country filtering. |
 ---
 
 ## 📍 Nearest Stations Search & Geolocation Fallback Algorithm
@@ -165,6 +167,17 @@ export function haversineDistance(lat1: number, lon1: number, lat2: number, lon2
 ```
 
 The sorted list is sliced to return the top 5 nearest stations. In rare scenarios where fewer than 5 stations are geocoded, any available non-geocoded stations from the response are appended as fallback fillers to maintain layout consistency.
+
+---
+
+## 📺 Live TV Channels Integration
+
+In addition to radio stations, WaveScape integrates global Live TV broadcasts using the open-source **IPTV-Org API**.
+
+*   **Country-Based Routing**: When a city is searched, the application resolves its corresponding ISO country code and immediately provisions a comprehensive list of localized TV channels originating from that specific country.
+*   **HLS Stream Player (`hls.js`)**: Real-time `.m3u8` streams are processed and rendered using `hls.js`. For browsers lacking Media Source Extensions (MSE) support (such as Safari on iOS), the player gracefully falls back to native Apple HLS decoding.
+*   **Dynamic Filtering**: Channels can be rapidly sorted by broadcast category (e.g., News, Movies, Music, Sports). A streaming verification filter allows users to instantly hide offline channels and only display active, verified live streams.
+*   **Neobrutalist CRT Aesthetic**: The video player is embedded directly behind an SVG hollowed retro TV frame. A CSS-driven scanline gradient and curved glass glare overlay ensure the modern high-definition streams inherit a vintage CRT aesthetic.
 
 ---
 

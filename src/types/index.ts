@@ -2,6 +2,7 @@ export type { LocationModel, LocationSuggestion } from './location'
 export type { WeatherModel, WeatherState, WeatherProfile, ParticleProfile, BackgroundStyle, ParticleType } from './weather'
 export type { AudioMetrics, PlaybackState, StationModel } from './audio'
 export type { ThemeColors, Theme } from './theme'
+export type { TVChannel, TVCategory, TVStream, TVLogo, TVCountry } from './tv'
 
 export type LoadingState = 'idle' | 'loading' | 'success' | 'error'
 

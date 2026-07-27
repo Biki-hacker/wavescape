@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { AppProvider, useAppState, useAppDispatch } from './context'
-import { useLocation, useWeather, useRadio, useTuningTransition } from './hooks'
-import { SearchBar, LocationDisplay, PlaybackControls, RadioDisplay, Footer, Header, LoadingScreen, ErrorDisplay } from './components'
+import { useLocation, useWeather, useRadio, useTuningTransition, useTV } from './hooks'
+import { SearchBar, LocationDisplay, PlaybackControls, RadioDisplay, Footer, Header, LoadingScreen, ErrorDisplay, ServiceTabs, TVDisplay } from './components'
+import type { ServiceTab } from './components/ServiceTabs'
 import { audioEngine } from './audio/AudioEngine'
 
 function WaveScapeContent() {
@@ -11,11 +12,14 @@ function WaveScapeContent() {
   const [muted, setMuted] = useState(false)
   const [landingComplete, setLandingComplete] = useState(false)
   const [isRadioHovered, setIsRadioHovered] = useState(false)
+  const [activeTab, setActiveTab] = useState<ServiceTab>('radio')
   const searchInitRef = useRef(false)
+  const previousTab = useRef<ServiceTab>(activeTab)
 
   const { suggestions, loading: searchLoading, search, clearSuggestions } = useLocation()
   const { weatherLoading } = useWeather()
   const { loadStations, selectStation, togglePlay, nextStation, prevStation } = useRadio()
+  const tv = useTV()
 
   const handleSelectLocation = useCallback(async (suggestion: typeof suggestions[number]) => {
     dispatch({ type: 'SET_SCENE_STATE', payload: 'loading' })
@@ -24,6 +28,7 @@ function WaveScapeContent() {
     const loc = {
       name: suggestion.name,
       country: suggestion.country,
+      countryCode: suggestion.countryCode,
       displayName: suggestion.displayName,
       latitude: suggestion.latitude,
       longitude: suggestion.longitude,
@@ -32,6 +37,7 @@ function WaveScapeContent() {
     dispatch({ type: 'SET_SEARCHED_LOCATION', payload: loc })
     dispatch({ type: 'CLEAR_DATA' })
 
+    // Load radio stations
     const stationsResult = await loadStations(loc.latitude, loc.longitude)
 
     if (stationsResult && stationsResult.length > 0) {
@@ -45,8 +51,13 @@ function WaveScapeContent() {
       }
     }
 
+    // Load TV channels for the country
+    if (loc.countryCode) {
+      tv.loadTVData(loc.countryCode)
+    }
+
     dispatch({ type: 'SET_SCENE_STATE', payload: 'playing' })
-  }, [dispatch, clearSuggestions, loadStations, selectStation])
+  }, [dispatch, clearSuggestions, loadStations, selectStation, tv])
 
   const handleStationSelect = useCallback((station: typeof stations[number]) => {
     selectStation(station)
@@ -92,6 +103,15 @@ function WaveScapeContent() {
       setTimeout(() => setLandingComplete(true), 1000)
     }
   }, [landingComplete])
+
+  useEffect(() => {
+    if (activeTab !== previousTab.current) {
+      if (activeTab === 'tv' && playbackState === 'playing') {
+        audioEngine.pause()
+      }
+      previousTab.current = activeTab
+    }
+  }, [activeTab, playbackState])
 
   if (!landingComplete) {
     return <LoadingScreen message="Waking up..." />
@@ -217,113 +237,139 @@ function WaveScapeContent() {
               loading={searchLoading}
               disabled={isLoading}
             />
+            <ServiceTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
           {activeLocation && (
             <LocationDisplay location={activeLocation} />
           )}
 
-          <div className="flex flex-col items-center">
-            <div
-              className={`relative w-36 h-36 md:w-44 md:h-44 my-2 animate-float flex items-center justify-center cursor-pointer transition-all duration-500 ${isVisualConnecting ? 'animate-pulse' : ''}`}
-              onMouseEnter={() => setIsRadioHovered(true)}
-              onMouseLeave={() => setIsRadioHovered(false)}
-              onClick={() => {
-                if (currentStation) togglePlay()
-              }}
-              title={currentStation ? (isVisualConnecting ? 'Tuning stream... (Click to cancel)' : isAudioPlaying ? 'Click to Pause' : 'Click to Play') : 'Select a station below'}
-            >
-              {(isVisualConnecting || isVisualConnected) && (
+          {/* === RADIO TAB CONTENT === */}
+          <div className={`w-full flex flex-col items-center gap-8 md:gap-12 ${activeTab === 'radio' ? 'flex' : 'hidden'}`}>
+            <>
+              <div className="flex flex-col items-center">
                 <div
-                  className={`absolute inset-0 rounded-full border-4 border-dashed border-black pointer-events-none transition-all duration-700 ease-out ${
-                    isVisualConnected
-                      ? 'opacity-0 scale-125'
-                      : 'opacity-60 scale-100 animate-spin'
-                  }`}
-                  style={{ animationDuration: '6s' }}
+                  className={`relative w-36 h-36 md:w-44 md:h-44 my-2 animate-float flex items-center justify-center cursor-pointer transition-all duration-500 ${isVisualConnecting ? 'animate-pulse' : ''}`}
+                  onMouseEnter={() => setIsRadioHovered(true)}
+                  onMouseLeave={() => setIsRadioHovered(false)}
+                  onClick={() => {
+                    if (currentStation) togglePlay()
+                  }}
+                  title={currentStation ? (isVisualConnecting ? 'Tuning stream... (Click to cancel)' : isAudioPlaying ? 'Click to Pause' : 'Click to Play') : 'Select a station below'}
+                >
+                  {(isVisualConnecting || isVisualConnected) && (
+                    <div
+                      className={`absolute inset-0 rounded-full border-4 border-dashed border-black pointer-events-none transition-all duration-700 ease-out ${
+                        isVisualConnected
+                          ? 'opacity-0 scale-125'
+                          : 'opacity-60 scale-100 animate-spin'
+                      }`}
+                      style={{ animationDuration: '6s' }}
+                    />
+                  )}
+                  <img
+                    src="/icons/radio.svg"
+                    alt="Retro Radio"
+                    style={{
+                      transform: `scale(${radioScale})`,
+                      transition: isAudioPlaying ? 'transform 60ms ease-out' : 'transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    }}
+                    className="w-full h-full drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] select-none"
+                  />
+                </div>
+                {(isVisualConnecting || isVisualConnected) && currentStation && (
+                  <div
+                    className={`mt-3 px-4 py-2 border-3 border-black rounded-lg font-mono text-xs font-bold flex items-center gap-2 shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all duration-300 ${
+                      isVisualConnected
+                        ? 'bg-emerald-400 text-black'
+                        : 'bg-[var(--accent)] text-black animate-pulse'
+                    }`}
+                  >
+                    <div
+                      className={`w-2.5 h-2.5 border border-black rounded-full ${
+                        isVisualConnected ? 'bg-black' : 'bg-black animate-ping'
+                      }`}
+                    />
+                    <span>{isVisualConnected ? '✦ SIGNAL LOCKED · LIVE' : 'TUNING TO LIVE STREAM...'}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col items-center gap-6 w-full max-w-lg">
+                <RadioDisplay
+                  station={currentStation}
+                  playbackState={playbackState}
+                  weather={weather}
+                  weatherProfile={weatherProfile}
+                  timezone={timezone || undefined}
+                  onStationSelect={handleStationSelect}
+                  onStationPlay={handleStationPlay}
+                  stations={stations}
+                  searchedLocation={searchedLocation}
+                  isVisualConnecting={isVisualConnecting}
+                  isVisualConnected={isVisualConnected}
+                />
+
+                {stations.length > 0 && (
+                  <PlaybackControls
+                    playbackState={playbackState}
+                    onTogglePlay={togglePlay}
+                    onNext={nextStation}
+                    onPrev={prevStation}
+                    onVolumeChange={handleVolumeChange}
+                    onToggleMute={handleToggleMute}
+                    volume={volume}
+                    muted={muted}
+                    disabled={stations.length === 0}
+                    isVisualConnecting={isVisualConnecting}
+                  />
+                )}
+
+                {error && (
+                  <ErrorDisplay
+                    message={error.friendlyMessage}
+                    onRetry={error.retry}
+                  />
+                )}
+              </div>
+
+              {!searchedLocation && (
+                <div className="text-center mt-8">
+                  <p className="font-mono text-lg text-[var(--muted-text)]">
+                    Search a city to discover nearby radio stations and their atmosphere
+                  </p>
+                </div>
+              )}
+
+              {searchedLocation && stations.length === 0 && !weatherLoading && (
+                <ErrorDisplay
+                  message="No radio stations found for this location."
+                  actionLabel="Search Again"
+                  onAction={() => dispatch({ type: 'SET_SCENE_STATE', payload: 'landing' })}
                 />
               )}
-              <img
-                src="/icons/radio.svg"
-                alt="Retro Radio"
-                style={{
-                  transform: `scale(${radioScale})`,
-                  transition: isAudioPlaying ? 'transform 60ms ease-out' : 'transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1)',
-                }}
-                className="w-full h-full drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] select-none"
-              />
-            </div>
-            {(isVisualConnecting || isVisualConnected) && currentStation && (
-              <div
-                className={`mt-3 px-4 py-2 border-3 border-black rounded-lg font-mono text-xs font-bold flex items-center gap-2 shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all duration-300 ${
-                  isVisualConnected
-                    ? 'bg-emerald-400 text-black'
-                    : 'bg-[var(--accent)] text-black animate-pulse'
-                }`}
-              >
-                <div
-                  className={`w-2.5 h-2.5 border border-black rounded-full ${
-                    isVisualConnected ? 'bg-black' : 'bg-black animate-ping'
-                  }`}
-                />
-                <span>{isVisualConnected ? '✦ SIGNAL LOCKED · LIVE' : 'TUNING TO LIVE STREAM...'}</span>
-              </div>
-            )}
+            </>
           </div>
 
-          <div className="flex flex-col items-center gap-6 w-full max-w-lg">
-            <RadioDisplay
-              station={currentStation}
-              playbackState={playbackState}
-              weather={weather}
-              weatherProfile={weatherProfile}
-              timezone={timezone || undefined}
-              onStationSelect={handleStationSelect}
-              onStationPlay={handleStationPlay}
-              stations={stations}
-              searchedLocation={searchedLocation}
-              isVisualConnecting={isVisualConnecting}
-              isVisualConnected={isVisualConnected}
+          {/* === TV TAB CONTENT === */}
+          <div className={`w-full flex flex-col items-center ${activeTab === 'tv' ? 'flex' : 'hidden'}`}>
+            <TVDisplay
+              channels={tv.channels}
+              filteredChannels={tv.filteredChannels}
+              categories={tv.categories}
+              selectedCategory={tv.selectedCategory}
+              onCategorySelect={tv.setSelectedCategory}
+              logoMap={tv.logoMap}
+              streamMap={tv.streamMap}
+              loading={tv.loading}
+              error={tv.error}
+              countryName={tv.countryName}
+              countryFlag={tv.countryFlag}
+              hasSearched={!!searchedLocation}
+              timezone={timezone}
+              isActive={activeTab === 'tv'}
             />
-
-            {stations.length > 0 && (
-              <PlaybackControls
-                playbackState={playbackState}
-                onTogglePlay={togglePlay}
-                onNext={nextStation}
-                onPrev={prevStation}
-                onVolumeChange={handleVolumeChange}
-                onToggleMute={handleToggleMute}
-                volume={volume}
-                muted={muted}
-                disabled={stations.length === 0}
-                isVisualConnecting={isVisualConnecting}
-              />
-            )}
-
-            {error && (
-              <ErrorDisplay
-                message={error.friendlyMessage}
-                onRetry={error.retry}
-              />
-            )}
           </div>
-
-          {!searchedLocation && (
-            <div className="text-center mt-8">
-              <p className="font-mono text-lg text-[var(--muted-text)]">
-                Search a city to discover nearby radio stations and their atmosphere
-              </p>
-            </div>
-          )}
-
-          {searchedLocation && stations.length === 0 && !weatherLoading && (
-            <ErrorDisplay
-              message="No radio stations found for this location."
-              actionLabel="Search Again"
-              onAction={() => dispatch({ type: 'SET_SCENE_STATE', payload: 'landing' })}
-            />
-          )}
         </main>
 
         <Footer />

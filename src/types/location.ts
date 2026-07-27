@@ -1,6 +1,7 @@
 export interface LocationModel {
   name: string
   country: string
+  countryCode?: string
   displayName: string
   latitude: number
   longitude: number
@@ -10,6 +11,7 @@ export interface LocationModel {
 export interface LocationSuggestion {
   name: string
   country: string
+  countryCode?: string
   displayName: string
   latitude: number
   longitude: number

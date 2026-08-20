@@ -100,6 +100,13 @@
   .text-balance {
     text-wrap: balance;
   }
+  .neo-grid {
+    background-color: var(--background, #FFF8E7);
+    background-image: 
+      linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
 }
 
 @layer animations {

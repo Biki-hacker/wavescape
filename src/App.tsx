@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { AppProvider, useAppState, useAppDispatch } from './context'
 import { useLocation, useWeather, useRadio, useTuningTransition, useTV } from './hooks'
-import { SearchBar, LocationDisplay, PlaybackControls, RadioDisplay, Footer, Header, LoadingScreen, ErrorDisplay, ServiceTabs, TVDisplay } from './components'
+import { SearchBar, LocationDisplay, PlaybackControls, RadioDisplay, Footer, Header, LoadingScreen, ErrorDisplay, ServiceTabs, TVDisplay, ModeSelectionScreen } from './components'
 import type { ServiceTab } from './components/ServiceTabs'
 import { audioEngine } from './audio/AudioEngine'
 
@@ -11,6 +11,7 @@ function WaveScapeContent() {
   const [volume, setVolume] = useState(0.8)
   const [muted, setMuted] = useState(false)
   const [landingComplete, setLandingComplete] = useState(false)
+  const [hasSelectedService, setHasSelectedService] = useState(false)
   const [isRadioHovered, setIsRadioHovered] = useState(false)
   const [activeTab, setActiveTab] = useState<ServiceTab>('radio')
   const searchInitRef = useRef(false)
@@ -120,6 +121,17 @@ function WaveScapeContent() {
 
   if (!landingComplete) {
     return <LoadingScreen message="Waking up..." />
+  }
+
+  if (!hasSelectedService) {
+    return (
+      <ModeSelectionScreen
+        onSelect={(selectedMode) => {
+          setActiveTab(selectedMode)
+          setHasSelectedService(true)
+        }}
+      />
+    )
   }
 
   const isLoading = sceneState === 'loading'

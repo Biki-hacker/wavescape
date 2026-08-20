@@ -1,12 +1,14 @@
+import { Radio } from 'lucide-react'
+
 interface LoadingScreenProps {
   message?: string
 }
 
 export function LoadingScreen({ message = 'Tuning...' }: LoadingScreenProps) {
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[var(--background)] z-50" role="status" aria-label="Loading">
-      <div className="w-32 h-32 mb-8 animate-float">
-        <img src="/icons/radio.svg" alt="" className="w-full h-full drop-shadow-[8px_8px_0px_rgba(0,0,0,1)]" />
+    <div className="fixed inset-0 flex flex-col items-center justify-center neo-grid z-50" role="status" aria-label="Loading">
+      <div className="mb-8 animate-float">
+        <Radio className="w-24 h-24 text-black p-4 bg-[var(--accent)] border-3 border-black rounded-2xl shadow-[6px_6px_0px_rgba(0,0,0,1)]" aria-hidden="true" />
       </div>
 
       <div className="flex gap-2 mb-6" aria-hidden="true">

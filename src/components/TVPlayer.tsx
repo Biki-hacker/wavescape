@@ -1,19 +1,17 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { Volume2, VolumeX, Maximize, Play, Pause, X, Radio, AlertTriangle, Clock } from 'lucide-react'
+import { Volume2, VolumeX, Maximize, Play, Pause, X, Radio, AlertTriangle } from 'lucide-react'
 import Hls from 'hls.js'
 import type { TVChannel, TVStream } from '../types'
-import { getOngoingProgram, type OngoingProgram } from '../utils/tvProgramGuide'
 
 interface TVPlayerProps {
   channel: TVChannel | null
   stream: TVStream | null
   logoUrl?: string
-  timezone?: string
   onClose?: () => void
   isActive?: boolean
 }
 
-export function TVPlayer({ channel, stream, logoUrl, timezone, onClose, isActive = true }: TVPlayerProps) {
+export function TVPlayer({ channel, stream, logoUrl, onClose, isActive = true }: TVPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const hlsRef = useRef<Hls | null>(null)
   
@@ -22,15 +20,6 @@ export function TVPlayer({ channel, stream, logoUrl, timezone, onClose, isActive
   const [volume, setVolume] = useState(0.8)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [program, setProgram] = useState<OngoingProgram | null>(() => (channel ? getOngoingProgram(channel, stream, timezone) : null))
-
-  useEffect(() => {
-    if (!channel) return
-    const updateProgram = () => setProgram(getOngoingProgram(channel, stream, timezone))
-    updateProgram()
-    const timer = setInterval(updateProgram, 30000)
-    return () => clearInterval(timer)
-  }, [channel, stream, timezone])
 
   const isActiveRef = useRef(isActive)
   useEffect(() => {
@@ -288,60 +277,6 @@ export function TVPlayer({ channel, stream, logoUrl, timezone, onClose, isActive
           className="w-full h-full object-contain pointer-events-none z-20 relative drop-shadow-[6px_6px_0px_rgba(0,0,0,1)]"
         />
       </div>
-
-      {/* ONGOING PROGRAM INFORMATION (BELOW TV SVG) */}
-      {program && (
-        <div className="w-full mt-3 p-3.5 sm:p-4 bg-[var(--surface)] border-3 border-black rounded-lg shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            {/* Left: On-Air badge & Program Title */}
-            <div className="flex items-start gap-3 min-w-0">
-              <span className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-400 text-black border-2 border-black rounded font-mono font-black text-[11px] uppercase shadow-[1px_1px_0px_rgba(0,0,0,1)] flex-shrink-0 mt-0.5">
-                <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
-                ON AIR
-              </span>
-              <div className="min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="font-mono text-[11px] font-bold text-[var(--muted-text)] uppercase tracking-wider">
-                    CURRENT PROGRAM
-                  </span>
-                  {program.genre && (
-                    <span className="px-1.5 py-0.2 bg-[var(--accent)] border border-black rounded font-mono font-bold text-[10px] uppercase text-black">
-                      {program.genre}
-                    </span>
-                  )}
-                </div>
-                <h3 className="font-space text-base sm:text-lg font-black text-[var(--text)] truncate leading-tight">
-                  {program.title}
-                </h3>
-                {program.subtitle && (
-                  <p className="font-mono text-xs text-[var(--muted-text)] truncate mt-0.5">
-                    {program.subtitle}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Right: Time Slot & Progress */}
-            <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-1.5 flex-shrink-0 border-t sm:border-t-0 border-black/15 pt-2 sm:pt-0">
-              <span className="flex items-center gap-1 font-mono font-bold text-xs text-[var(--text)]">
-                <Clock className="w-3.5 h-3.5 text-[var(--muted-text)]" />
-                {program.startTime} – {program.endTime}
-              </span>
-              <div className="flex items-center gap-2">
-                <div className="w-20 sm:w-24 h-2 bg-neutral-200 border border-black rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-[var(--accent)] transition-all duration-500"
-                    style={{ width: `${program.progress}%` }}
-                  />
-                </div>
-                <span className="font-mono text-[10px] font-bold text-[var(--muted-text)]">
-                  {program.remainingMinutes}m left
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* VIDEO CONTROLS BAR (NEOBRUTALIST STYLE) */}
       <div className="w-full flex flex-wrap items-center justify-between gap-4 mt-4 pt-3 border-t-3 border-black bg-[var(--surface)] px-2">

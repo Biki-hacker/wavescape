@@ -189,7 +189,6 @@ export function TVDisplay({
           channel={activeChannel}
           stream={activeStream}
           logoUrl={logoMap.get(activeChannel.id)}
-          timezone={timezone || undefined}
           onClose={handleClosePlayer}
           isActive={isActive}
         />
